@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import Cards from "../../components/Cards";
 
 const Menu = () => {
   const [menu, setMenu] = useState([]);
   const[filteredItems , setFilteredItems] = useState([]);
   const[selectedCategory, setSelectedCategory] = useState("all");
-  const [sortOption, setsortOption] = useState("default");
+  const [sortOption, setSortOption] = useState("default");
 
   //loading data 
 
@@ -26,6 +27,55 @@ const Menu = () => {
     //call the function 
     fetchData();
   }, [])
+
+//filtering data based on category
+
+const filterItems = (category) => {
+    const filtered = category === "all" ? menu : menu.filter((item) => item.category === category);
+
+    setFilteredItems(filtered);
+    setSelectedCategory(category);
+};
+
+
+//show all data function
+
+const showAll = () => {
+  setFilteredItems(menu);
+  setSelectedCategory("all");
+}
+
+//sorting based A-Z, Z-A and Low-High prices
+
+const handleSortChange = (option) => {
+  setSortOption(option);
+
+  let sortedItems = [...filteredItems];
+ 
+
+  //logic
+
+  switch(option){
+    case "A-Z":
+        sortedItems.sort((a, b) => a.name.localeCompare(b.name))
+      break;
+    case "Z-A":
+        sortedItems.sort((a, b) => b.name.localeCompare(a.name))
+      break;
+    case "low-to-high":
+        sortedItems.sort((a, b) => a.price - b.price)
+      break;
+    case "high-to-low":
+        sortedItems.sort((a, b) => b.price - a.price)
+      break;
+    default:
+      //code block
+      break;
+  }
+
+  setFilteredItems(sortedItems);
+  
+}
 
 
 
@@ -55,7 +105,17 @@ const Menu = () => {
       
       {/* menu shop section  */}
       <div className="section-container">
+        {/*filtering and sorting*/}
+        <div>filtering and sorting</div>
 
+      {/*products card*/}
+      <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
+        {
+          filteredItems.map((item) => (
+            <Cards key={item._id} item={item} />
+          ))
+        }
+      </div>
       </div>
     </div>
   );
