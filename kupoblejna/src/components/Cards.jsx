@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import {Link} from "react-router-dom"
 import {FaHeart} from "react-icons/fa"
 
-function Cards({item}) {
+const Cards=({item}) =>{
     const [isHeartFillted, setIsHeartFillted] = useState(false);
 
     const handleHeartClick = () => {
