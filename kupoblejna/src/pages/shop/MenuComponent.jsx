@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Cards from "../../components/Cards";
+import { FaFilter } from "react-icons/fa"
 
 const Menu = () => {
   const [menu, setMenu] = useState([]);
@@ -128,7 +129,20 @@ const handleSortChange = (option) => {
               className={selectedCategory === "drinks" ? "active" : ""}
               >Drinks</button>
             </div>
+            
+            {/* sorting base filtering*/}
+            <div>
+                <div className="bg-black p-2">
+                    <FaFilter className="h-4 w-4 text-white"/>
+                </div>
 
+                {/* sorting options*/}
+                <select name="sort" id="sort"
+                onChange={(e) => handleSortChange(e.target.value)}
+                
+                >
+                </select>
+            </div>
         </div>
 
       {/*products card*/}
