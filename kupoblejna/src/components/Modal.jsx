@@ -1,14 +1,24 @@
 import React from "react";
 import { FaFacebookF, FaGithub, FaGoogle } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form"
 
 const Modal = () => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+      } = useForm();
+
+      const onSubmit = (data) => console.log(data)
   return (
     <dialog id="my_modal_5" className="modal modal-middle sm:modal-middle">
       <div className="modal-box">
         <div className="modal-action  flex flex-col justify-center mt-0">
-          <form className="card-body" method="dialog">
+          <form onSubmit={handleSubmit(onSubmit)} className="card-body" method="dialog">
             <h3 className="font-bold text-lg">Please Login!</h3>
+
+            {/* Email */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -17,9 +27,10 @@ const Modal = () => {
                 type="email"
                 placeholder="email"
                 className="input input-bordered"
-                required
+                {...register("email")} 
               />
             </div>
+            {/* Password */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Password</span>
@@ -28,7 +39,7 @@ const Modal = () => {
                 type="password"
                 placeholder="password"
                 className="input input-bordered"
-                required
+                {...register("password")} 
               />
               <label className="label  mt-1">
                 <a href="#" className="label-text-alt link link-hover">
