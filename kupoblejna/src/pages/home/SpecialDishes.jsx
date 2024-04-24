@@ -14,8 +14,9 @@ const simpleNextArrow = (props) => {
         >
         NEXT
         </div>
-    )
-}
+    );
+};
+
 
 const simplePrevArrow = (props) => {
     const {className, style, onClick} = props;
@@ -75,7 +76,7 @@ const SpecialDishes = () => {
           }
         ],
 
-        nextArrow: <simpleNextArrow/>,
+        nextArrow: <simpleNextArrow />,
         prevArrow: <simplePrevArrow/>
       };
     return(
