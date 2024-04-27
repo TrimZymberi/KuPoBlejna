@@ -1,44 +1,58 @@
-import React, { createContext, useState } from 'react'
-import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
-import app from "../firebase/firebase.config" 
+import React, { createContext, useEffect, useState } from 'react';
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile, onAuthStateChanged } from "firebase/auth"; // Import onAuthStateChanged
+import app from "../firebase/firebase.config";
 import PropTypes from 'prop-types';
 
 export const AuthContext = createContext();
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
-
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // create an account 
+    // create an account
     const createUser = (email, password) => {
-        return createUserWithEmailAndPassword(auth, email, password) 
+        return createUserWithEmailAndPassword(auth, email, password);
     }
 
-    //sign up with gmail 
+    // sign up with Gmail
     const signUpWithGmail = () => {
-       return signInWithPopup(auth, googleProvider)
+        return signInWithPopup(auth, googleProvider);
     }
 
-    //login using email and password
+    // login using email and password
     const login = (email, password) => {
         return signInWithEmailAndPassword(auth, email, password);
     }
 
-    //logout 
-
+    // logout
     const logOut = () => {
-        signOut(auth)
+        signOut(auth);
     }
 
-    //update profile 
-    const updateuserProfile = ({name, photoURL}) => {
+    // update profile
+    const updateuserProfile = ({ name, photoURL }) => {
         return updateProfile(auth.currentUser, {
-            displayName: name , photoURL: photoURL
-          })
+            displayName: name, photoURL: photoURL
+        });
     }
+
+    // check signed-in user
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            if (currentUser) {
+                setUser(currentUser);
+                setLoading(false);
+            } else {
+                // User is signed out
+                // ...
+            }
+        });
+        return () => {
+            unsubscribe(); // No need to return unsubscribe
+        }
+    }, []);
 
     const authInfo = {
         user,
@@ -47,16 +61,18 @@ const AuthProvider = ({ children }) => {
         login,
         logOut,
         updateuserProfile
-    }
+    };
+
     return (
-    <AuthContext.Provider value={authInfo}>
-        {children}
-    </AuthContext.Provider>
-  );
+        <AuthContext.Provider value={authInfo}>
+            {children}
+        </AuthContext.Provider>
+    );
 };
 
 AuthProvider.propTypes = {
     children: PropTypes.node // Add this line for children prop validation
 };
 
-export default AuthProvider
+export default AuthProvider;
+
