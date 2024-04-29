@@ -1,6 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { AuthContext } from '../contexts/AuthProvider'
 
 const Profile = ({user}) => {
+
+  const {logOut} = useContext(AuthContext)
+  const handleLogout = () => {
+    logOut().then(() => {
+      // Sign-out successful.
+      alert("Logout Succes")
+    }).catch((error) => {
+      // An error happened.
+    });
+  }
   return (
     <div>
         <div className="drawer drawer-end z-50">
@@ -39,7 +50,7 @@ const Profile = ({user}) => {
       </li>
 
       <li>
-        <a>Logout</a>
+        <a onClick={handleLogout}>Logout</a>
       </li>
 
     </ul>

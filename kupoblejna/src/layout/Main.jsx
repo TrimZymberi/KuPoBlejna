@@ -1,18 +1,27 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Outlet } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import "../App.css"
 import Footer from '../components/Footer'
+import { AuthContext } from '../contexts/AuthProvider'
+import LoadingSpineer from '../components/LoadingSpineer'
 
 const Main = () => {
+  const {loading} = useContext(AuthContext);
   return (
     <div className='bg-prigmayBG'>
-      <Navbar/>
-      <div className='min-h-screen'>
-      <Outlet/> 
+      {
+        loading ? <LoadingSpineer/>
+        :
+        <div>
+          <Navbar/>
+          <div className='min-h-screen'>
+          <Outlet/> 
+          </div>
+          <Footer/> 
+        </div>
+      }
       </div>
-      <Footer/> 
-    </div>
   )
 }
 
