@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile, onAuthStateChanged } from "firebase/auth"; // Import onAuthStateChanged
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import app from "../firebase/firebase.config";
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'; // Import PropTypes
 
 export const AuthContext = createContext();
 const auth = getAuth(app);
@@ -13,45 +13,39 @@ const AuthProvider = ({ children }) => {
 
     // create an account
     const createUser = (email, password) => {
+        setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password);
-    }
+    };
 
-    // sign up with Gmail
+    // signup with gmail
     const signUpWithGmail = () => {
+        setLoading(true);
         return signInWithPopup(auth, googleProvider);
-    }
+    };
 
-    // login using email and password
+    // login using email & password
     const login = (email, password) => {
         return signInWithEmailAndPassword(auth, email, password);
-    }
+    };
 
-    // logout
+    // logout 
     const logOut = () => {
-        signOut(auth);
-    }
+        return signOut(auth);
+    };
 
     // update profile
-    const updateUserProfile = ({ name, photoURL }) => {
-        return updateProfile(auth.currentUser, {
-            displayName: name, photoURL: photoURL
-        });
-    }
+    const updateUserProfile = (name, photoURL) => {
+        return updateProfile(auth.currentUser, { displayName: name, photoURL: photoURL });
+    };
 
     // check signed-in user
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            if (currentUser) {
-                setUser(currentUser);
-                setLoading(false);
-            } else {
-                // User is signed out
-                // ...
-            }
+        const unsubscribe = onAuthStateChanged(auth, currentUser => {
+            setUser(currentUser);
+            setLoading(false);
         });
-        return () => {
-            unsubscribe(); // No need to return unsubscribe
-        }
+
+        return () => unsubscribe();
     }, []);
 
     const authInfo = {
@@ -60,9 +54,10 @@ const AuthProvider = ({ children }) => {
         signUpWithGmail,
         login,
         logOut,
-        updateUserProfile
+        updateUserProfile,
+        loading
     };
-
+  
     return (
         <AuthContext.Provider value={authInfo}>
             {children}
@@ -70,9 +65,9 @@ const AuthProvider = ({ children }) => {
     );
 };
 
+// Define PropTypes for the AuthProvider component
 AuthProvider.propTypes = {
-    children: PropTypes.node // Add this line for children prop validation
+    children: PropTypes.node.isRequired // Define that children can be any renderable React nodes
 };
 
 export default AuthProvider;
-
