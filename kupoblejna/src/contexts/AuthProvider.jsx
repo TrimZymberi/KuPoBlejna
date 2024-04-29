@@ -32,7 +32,7 @@ const AuthProvider = ({ children }) => {
     }
 
     // update profile
-    const updateuserProfile = ({ name, photoURL }) => {
+    const updateUserProfile = ({ name, photoURL }) => {
         return updateProfile(auth.currentUser, {
             displayName: name, photoURL: photoURL
         });
@@ -60,7 +60,7 @@ const AuthProvider = ({ children }) => {
         signUpWithGmail,
         login,
         logOut,
-        updateuserProfile
+        updateUserProfile
     };
 
     return (

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { useForm } from "react-hook-form"
 import {AuthContext} from '../../contexts/AuthProvider'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const UpdateProfile = () => {
     const {updateUserProfile} = useContext(AuthContext)
@@ -9,17 +10,23 @@ const UpdateProfile = () => {
         handleSubmit,
         watch,
         formState: { errors },
-      } = useForm()
-      const onSubmit = (data) => {
-        const name = data.name;
-        const photoURL = data.photoURL;
+      } = useForm();
+
+      const location = useLocation();
+      const navigate = useNavigate();
+      const from = location.state?.from?.pathname || "/";
+      
+      function onSubmit(data) {
+        const name = data.name
+        const photoURL = data.photoURL
         updateUserProfile(name, photoURL).then(() => {
             //Profile updated!
+            navigate(from, { replace: true })
             //...
-      }).catch((error) => {
-        //An error occured
-        //...
-      });
+        }).catch((error) => {
+            //An error occured
+            //...
+        })
     }
 
     return (
@@ -52,3 +59,5 @@ const UpdateProfile = () => {
 }
 
 export default UpdateProfile
+
+
