@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import React, { useEffect, useState } from "react";
 import Cards from "../../components/Cards";
 import { FaFilter } from "react-icons/fa"
@@ -16,7 +17,7 @@ const Menu = () => {
     //fetch data from backend
     const fetchData = async () => {
       try{
-        const response = await  fetch('/menu.json');
+        const response = await fetch("http://localhost:6005/menu");
         const data = await response.json();
         //console.log(data)
         setMenu(data);
