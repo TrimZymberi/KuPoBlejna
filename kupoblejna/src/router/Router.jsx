@@ -17,18 +17,22 @@ const router = createBrowserRouter([
       },
       {
         path: "/menu",
-        element: <PrivateRouter><Menu /></PrivateRouter>,
+        element: (
+          <PrivateRouter>
+            <Menu />
+          </PrivateRouter>
+        ),
       },
       {
         path: "/update-profile",
-        element: <UpdateProfile/>
-      }
+        element: <UpdateProfile />,
+      },
     ],
   },
   {
     path: "/signup",
-    element: <Signup/>
-  }
+    element: <Signup />,
+  },
 ]);
 
 export default router;
