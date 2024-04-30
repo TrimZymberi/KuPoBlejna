@@ -1,7 +1,9 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const port = process.env.PORT || 6001;
+const port = process.env.PORT || 6006;
+require('dotenv').config()
+
 
 //middleware
 app.use(cors());
@@ -11,9 +13,9 @@ app.use(express.json());
 // 208SWqrWgoacR6kp
 
 // mongodb config
-// / 24:38 ///// 
+
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://florentsahiti06:208SWqrWgoacR6kp@demo-kupoblejna-cluster.apwwcp8.mongodb.net/?retryWrites=true&w=majority&appName=demo-kupoblejna-cluster";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@demo-kupoblejna-cluster.apwwcp8.mongodb.net/?retryWrites=true&w=majority&appName=demo-kupoblejna-cluster`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -26,13 +28,21 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-    // Send a ping to confirm a successful connection
+    //database & collections
+    const menuCollections = client.db("demo-kupoblejna").collection("menus");
+    const cartCollections = client.db("demo-kupoblejna").collection("cartItems");
+
+    //all menu items operations
+    app.get('/menu', async(req, res) => {
+      const result = await menuCollections.find().toArray();
+      res.send(result)
+    })
+
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
-    // Ensures that the client will close when you finish/error
+    
     // await client.close();
   }
 }
