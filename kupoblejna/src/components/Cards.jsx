@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import {Link} from "react-router-dom"
 import {FaHeart} from "react-icons/fa"
+import PropTypes from 'prop-types';
 
-const Cards=({item}) =>{
+const Cards=({ item }) =>{
     const [isHeartFillted, setIsHeartFillted] = useState(false);
 
     const handleHeartClick = () => {
@@ -39,5 +40,15 @@ const Cards=({item}) =>{
         </div>
   )
 }
+
+Cards.propTypes = {
+    item: PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        image: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired
+    }).isRequired
+};
+
 
 export default Cards
