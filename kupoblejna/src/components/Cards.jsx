@@ -29,7 +29,7 @@ const location = useLocation();
         email: user.email,
       };
       // console.log(cartItem)
-      fetch("http://localhost:6005/carts", {
+      fetch("http://localhost:6006/carts", {
         method: "POST",
         headers:{
             'content-type': "application/json"
